@@ -1,0 +1,16 @@
+[package]
+name = "cortex9-epoch-gc"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+description = "Epoch-based memory reclamation and a lock-free hash map (Harris-Michael lists), checked with loom, Miri and ThreadSanitizer"
+repository = "https://github.com/federiconbaez/cortex9-epoch-gc"
+
+[dependencies]
+
+[target.'cfg(loom)'.dependencies]
+loom = "0.7"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(loom)'] }
