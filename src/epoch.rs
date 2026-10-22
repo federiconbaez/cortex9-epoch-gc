@@ -176,6 +176,12 @@ impl Handle {
     /// Try to move the global epoch forward by one step. Returns the
     /// epoch afterwards.
     fn try_advance(&self) -> usize {
+        // Pairs with the fence in `pin`: our earlier unlinks (plain
+        // AcqRel CAS) must be ordered before the loads of the participant
+        // words below, or a reader could pin unseen and still find a node
+        // we already retired. Found by the loom test
+        // `reader_never_sees_freed_value`.
+        fence(SeqCst);
         let e = self.g.epoch.load(SeqCst);
         if !self.g.config.bugs.ignore_pinned {
             let Ok(list) = self.g.participants.try_lock() else {

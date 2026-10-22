@@ -3,6 +3,8 @@
 //!
 //! - [`epoch`]: collector, per-thread handles, guards and deferred frees.
 //! - [`map`]: Harris–Michael lists in a fixed bucket array.
+//!
+//! Checked with loom (`--cfg loom`), Miri and ThreadSanitizer in CI.
 
 #![warn(missing_docs)]
 
